@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from tensorflow.keras.utils import image_dataset_from_directory
 from tensorflow import keras
 import pathlib
 
@@ -23,22 +22,20 @@ def get_model():
   return model
 
 
-data_dir = pathlib.Path("cats_vs_dogs_small")
-train_dataset = keras.utils.image_dataset_from_directory(
-    data_dir / "train",
-    image_size=(180, 180),
-    batch_size=32)
-validation_dataset = image_dataset_from_directory(
-    data_dir / "validation",
-    image_size=(180, 180),
-    batch_size=32)
-test_dataset = image_dataset_from_directory(
-    data_dir / "test",
-    image_size=(180, 180),
-    batch_size=32)
+data_dir = pathlib.Path("data/cats_vs_dogs_small")
+
+
 
 
 def train():
+  train_dataset = keras.utils.image_dataset_from_directory(
+    data_dir / "train",
+    image_size=(180, 180),
+    batch_size=32)
+  validation_dataset = keras.utils.image_dataset_from_directory(
+    data_dir / "validation",
+    image_size=(180, 180),
+    batch_size=32)
   model = get_model()
   model.summary()
   model.compile(loss='binary_crossentropy',
@@ -74,4 +71,18 @@ def plot_history(history):
   plt.legend()
   plt.show()
 
-train()
+# train()
+  
+def test_model():
+  model = keras.models.load_model("convnet_from_scratch.keras")
+  model.summary()
+  test_dataset = keras.utils.image_dataset_from_directory(
+    data_dir / "test",
+    image_size=(180, 180),
+    batch_size=32)
+
+  loss, accu = model.evaluate(test_dataset)
+  print(f"Test accuracy: {accu: .3f}")
+
+
+test_model()
