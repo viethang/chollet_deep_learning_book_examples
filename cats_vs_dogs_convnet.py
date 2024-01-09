@@ -42,7 +42,7 @@ def train():
                 optimizer='rmsprop', metrics=['accuracy'])
   callbacks = [
       keras.callbacks.ModelCheckpoint(
-          filepath="convnet_from_scratch.keras",
+          filepath="models/convnet_from_scratch.keras",
           save_best_only=True,
           monitor="val_loss")
   ]
@@ -74,7 +74,7 @@ def plot_history(history):
 # train()
   
 def test_model():
-  model = keras.models.load_model("convnet_from_scratch.keras")
+  model = keras.models.load_model("models/convnet_from_scratch.keras")
   model.summary()
   test_dataset = keras.utils.image_dataset_from_directory(
     data_dir / "test",
